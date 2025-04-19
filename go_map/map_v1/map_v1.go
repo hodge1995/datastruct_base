@@ -30,7 +30,7 @@ type MapV1 struct {
 	array []*list.List
 }
 
-func (m *MapV1) hash(key interface{}) int {
+func (m *MapV1) hash(key any) int {
 	node, err := md5.New().Write([]byte(fmt.Sprintf("%v", key)))
 	if err != nil {
 		panic(err)
@@ -38,7 +38,7 @@ func (m *MapV1) hash(key interface{}) int {
 	return node
 }
 
-func (m *MapV1) Put(key, value interface{}) {
+func (m *MapV1) Put(key, value any) {
 	node := m.hash(key)
 	if m.array[node] == nil {
 		m.array[node] = list.New()
@@ -48,7 +48,7 @@ func (m *MapV1) Put(key, value interface{}) {
 	return
 }
 
-func (m *MapV1) Get(key interface{}) interface{} {
+func (m *MapV1) Get(key any) any {
 	node := m.hash(key)
 	if m.array[node] == nil {
 		return nil
@@ -63,8 +63,8 @@ func (m *MapV1) Get(key interface{}) interface{} {
 	return nil
 }
 
-func (m *MapV1) Keys() []interface{} {
-	arr := make([]interface{}, 0)
+func (m *MapV1) Keys() []any {
+	arr := make([]any, 0)
 	length := len(m.array)
 	for i := 0; i < length; i++ {
 		l := m.array[i]
